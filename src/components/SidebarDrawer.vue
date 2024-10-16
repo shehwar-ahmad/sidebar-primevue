@@ -37,10 +37,6 @@ const menus = [
   },
 ]
 
-const toggleVisibility = () => {
-  visible.value = !visible.value
-}
-
 const routeHandler = (name: string) => {
   router.push({
     name,
@@ -64,33 +60,59 @@ watchEffect(() => {
 
 <template>
   <!-- Sidebar Drawer -->
-  <Drawer :visible="visible" :showCloseIcon="false"
-    :class="`bg-white p-3 transition-all duration-300 ease-in-out ${expanded ? 'w-64' : 'w-20'}`">
-    <div class="flex flex-col gap-3 h-full">
+  <Drawer
+    :visible="visible"
+    :showCloseIcon="false"
+    :class="`bg-white p-3 transition-all duration-300 ease-in-out ${expanded ? 'w-64' : 'w-20'}`"
+  >
+    <div class="flex flex-col gap-3 h-full overflow-x-hidden">
       <!-- Logos -->
 
-      <div class="flex flex-row justify-center gap-3 h-[50px] w-full">
-        <img src="https://placehold.co/70x50" width="70" height="50" alt="logo" class="rounded" />
+      <div class="flex flex-row justify-center gap-3 min-h-[60px] w-full">
+        <img src="https://placehold.co/70x50" alt="logo" class="rounded" />
 
-        <img v-if="expanded" src="https://placehold.co/130x50" height="100%" alt="logo" class="rounded" />
+        <img
+          v-if="expanded"
+          src="https://placehold.co/130x50"
+          alt="logo"
+          class="rounded"
+        />
       </div>
 
       <!-- Action Buttons -->
-      <div class="flex flex-row gap-2 px-2  items-center flex-wrap"
-        :class="isMobile ? 'justify-center' : 'justify-between'">
-        <Button v-if="expanded" class="bg-transparent p-2 text-2xl rounded" icon="pi pi-moon" />
+      <div
+        :class="`flex flex-row gap-2 px-2 items-center flex-wrap w-full min-h-[55px] ${isMobile  ? 'justify-center' : 'justify-between'}`"
+      >
+        <Button
+          v-if="expanded"
+          class="bg-transparent p-2 text-2xl rounded"
+          icon="pi pi-moon"
+        />
 
-        <Button v-if="expanded" class="bg-transparent p-2 text-2xl rounded" icon="pi pi-bell" />
+        <Button
+          v-if="expanded"
+          class="bg-transparent p-2 text-2xl rounded"
+          icon="pi pi-bell"
+        />
 
-        <Button class="bg-transparent p-2 text-2xl rounded" @click="expanded = !expanded"
-          :icon="`pi ${expanded ? 'pi-chevron-left' : 'pi-chevron-right'}`" v-if="!isMobile" />
+        <Button
+          class="bg-transparent p-2 text-2xl rounded"
+          @click="expanded = !expanded"
+          :icon="`pi ${expanded ? 'pi-chevron-left' : 'pi-chevron-right'}`"
+          v-if="!isMobile"
+        />
       </div>
 
       <!-- Menu Links -->
 
-      <div class="flex flex-col gap-2 flex-1">
-        <div v-for="menu in menus" :key="menu.to" class="flex flex-row gap-2 items-center p-2 hover:bg-gray-200"
-          @click="routeHandler(menu.to)" :class="isActiveRoute(menu.to) ? 'bg-red-200' : ''">
+      <div class="flex flex-col gap-3 flex-1 min-h-[400px]">
+        <div
+          v-for="menu in menus"
+          :key="menu.to"
+          class="flex flex-row gap-5 items-center p-4 transition-all min-h-[50px] rounded hover:bg-gray-200"
+          @click="routeHandler(menu.to)"
+          :class="isActiveRoute(menu.to) ? 'bg-red-200' : ''"
+        >
           <i :class="menu.icon" class="text-xl"></i>
 
           <p v-if="expanded">{{ menu.label }}</p>
@@ -98,15 +120,26 @@ watchEffect(() => {
       </div>
       <!-- Profile -->
 
-      <div class="flex flex-col transition-all duration-300 ease-in-out">
+      <div class="flex flex-col max-w-[100%]">
         <Transition name="slide-up-down">
-          <div class="transition-all duration-300 ease-in-out bg-gray-100 h-[200px]" v-if="isUserProfileActive">
-            Billing
+          <div class="bg-gray-100 h-[200px] p-2" v-if="isUserProfileActive">
+            <div
+              class="flex flex-row justify-center items-center flex-wrap gap-2"
+            >
+              <i
+                class="pi pi-dollar text-lg text-orange-500"
+                title="Pricing"
+              ></i>
+
+              <p v-if="expanded" class="w-fit text-lg">Pricing</p>
+            </div>
           </div>
         </Transition>
 
-        <div class="flex flex-row items-center justify-center gap-2 bg-purple-200 p-2 cursor-pointer"
-          @click="isUserProfileActive = !isUserProfileActive">
+        <div
+          class="flex flex-row items-center justify-center gap-2 bg-purple-200 p-2 cursor-pointer"
+          @click="isUserProfileActive = !isUserProfileActive"
+        >
           <i class="pi pi-user"></i>
           <p v-if="expanded">Username</p>
         </div>
@@ -114,17 +147,21 @@ watchEffect(() => {
     </div>
   </Drawer>
 
-  <div v-if="isMobile"
+  <div
+    v-if="isMobile"
     :class="`fixed transition-all duration-300 ease-in-out bottom-[50%] ${visible ? 'left-64' : 'left-0'} `"
-    @click="toggleVisibility">
-    <Button class="bg-gray-500 p-4 w-[70px] text-white"
-      :icon="`pi ${visible ? 'pi-chevron-left' : 'pi-chevron-right'}`" />
+    @click="visible = !visible"
+  >
+    <Button
+      class="bg-gray-500 p-4 w-fit text-white"
+      :icon="`pi ${visible ? 'pi-chevron-left' : 'pi-chevron-right'}`"
+    />
   </div>
 
-  <div class="absolute top-0 right-0 text-sm">
+  <!-- <div class="absolute top-0 right-0 text-sm">
     <p>Visible: {{ visible }}</p>
     <p>Expanded: {{ expanded }}</p>
-  </div>
+  </div> -->
 </template>
 
 <style scoped>
