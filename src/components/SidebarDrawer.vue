@@ -161,11 +161,6 @@ watchEffect(() => {
       :icon="`pi ${visible ? 'pi-chevron-left' : 'pi-chevron-right'}`"
     />
   </div>
-
-  <div class="absolute top-0 right-0 text-sm">
-    <p>Visible: {{ visible }}</p>
-    <p>Expanded: {{ expanded }}</p>
-  </div>
 </template>
 
 <style scoped>
