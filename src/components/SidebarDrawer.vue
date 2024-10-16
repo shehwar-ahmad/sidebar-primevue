@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, watchEffect } from 'vue'
-import Drawer from 'primevue/drawer'
 import Button from 'primevue/button'
 import { useWindowSize } from '@vueuse/core'
 import { useRouter, useRoute } from 'vue-router'
+import SidebarWrapper from './SidebarWrapper.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -64,12 +64,11 @@ watchEffect(() => {
 
 <template>
   <!-- Sidebar Drawer -->
-  <Drawer
-    :visible="visible"
-    :showCloseIcon="false"
-    :class="`bg-white p-3 transition-all duration-300 ease-in-out ${expanded ? 'w-64' : 'w-20'}`"
-  >
-    <div class="flex flex-col gap-3 h-full overflow-x-hidden">
+
+  <SidebarWrapper v-model:visible="visible" :expanded="expanded" :isMobile="isMobile">
+    <div
+      class="flex flex-col gap-3 min-h-full flex-1 overflow-x-hidden p-3 border border-r-gray-100"
+    >
       <!-- Logos -->
 
       <div class="flex flex-row justify-center gap-3 min-h-[60px] w-full">
@@ -126,7 +125,7 @@ watchEffect(() => {
 
       <div class="flex flex-col max-w-[100%]">
         <Transition name="slide-up-down">
-          <div class="bg-gray-100 h-[200px] p-2" v-if="isUserProfileActive">
+          <div class="bg-gray-200 h-[200px] p-2" v-if="isUserProfileActive">
             <div
               class="flex flex-row justify-center items-center flex-wrap gap-2"
             >
@@ -141,7 +140,7 @@ watchEffect(() => {
         </Transition>
 
         <div
-          class="flex flex-row items-center justify-center gap-2 bg-purple-200 p-2 cursor-pointer"
+          class="flex flex-row items-center justify-center gap-2 bg-purple-300 p-2 cursor-pointer"
           @click="isUserProfileActive = !isUserProfileActive"
         >
           <i class="pi pi-user"></i>
@@ -149,7 +148,7 @@ watchEffect(() => {
         </div>
       </div>
     </div>
-  </Drawer>
+  </SidebarWrapper>
 
   <div
     @click="visibilityToggle"
