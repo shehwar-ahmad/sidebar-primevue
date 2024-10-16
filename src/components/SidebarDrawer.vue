@@ -47,6 +47,10 @@ const isActiveRoute = (name: string) => {
   return route.name === name
 }
 
+const visibilityToggle = () => {
+  visible.value = !visible.value
+}
+
 watchEffect(() => {
   if (isMobile.value) {
     visible.value = false
@@ -81,16 +85,16 @@ watchEffect(() => {
 
       <!-- Action Buttons -->
       <div
-        :class="`flex flex-row gap-2 px-2 items-center flex-wrap w-full min-h-[55px] ${isMobile  ? 'justify-center' : 'justify-between'}`"
+        :class="`flex flex-row gap-2 px-2 items-center flex-wrap w-full min-h-[55px] ${isMobile ? 'justify-center' : 'justify-between'}`"
       >
         <Button
-          v-if="expanded"
+          v-show="expanded"
           class="bg-transparent p-2 text-2xl rounded"
           icon="pi pi-moon"
         />
 
         <Button
-          v-if="expanded"
+          v-show="expanded"
           class="bg-transparent p-2 text-2xl rounded"
           icon="pi pi-bell"
         />
@@ -105,7 +109,7 @@ watchEffect(() => {
 
       <!-- Menu Links -->
 
-      <div class="flex flex-col gap-3 flex-1 min-h-[400px]">
+      <div class="flex flex-col gap-3 flex-1">
         <div
           v-for="menu in menus"
           :key="menu.to"
@@ -148,9 +152,9 @@ watchEffect(() => {
   </Drawer>
 
   <div
+    @click="visibilityToggle"
     v-if="isMobile"
-    :class="`fixed transition-all duration-300 ease-in-out bottom-[50%] ${visible ? 'left-64' : 'left-0'} `"
-    @click="visible = !visible"
+    :class="`fixed transition-all duration-300 z-[10000] ease-in-out bottom-[50%] ${visible ? 'left-64' : 'left-0'} `"
   >
     <Button
       class="bg-gray-500 p-4 w-fit text-white"
@@ -158,10 +162,10 @@ watchEffect(() => {
     />
   </div>
 
-  <!-- <div class="absolute top-0 right-0 text-sm">
+  <div class="absolute top-0 right-0 text-sm">
     <p>Visible: {{ visible }}</p>
     <p>Expanded: {{ expanded }}</p>
-  </div> -->
+  </div>
 </template>
 
 <style scoped>
